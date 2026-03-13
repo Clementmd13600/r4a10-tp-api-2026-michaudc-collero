@@ -1,5 +1,5 @@
 
-export class Storage {
+export class Favoris {
     constructor() {
         // Clé pour isoler les données de l'application dans le localStorage
         this.key = "sumo_favs";

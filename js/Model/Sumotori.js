@@ -15,7 +15,7 @@ export class Sumotori {
     formatDate(dateStr) {
         if (!dateStr) return "Inconnue";
 
-        // On enlève tout ce qui se trouve après le 'T' (l'heure et le fuseau horaire) sinon tres moche comme retour
+        // On enlève tout ce qui se trouve après le 'T' sinon tres moche comme retour
         const dateSeule = dateStr.split('T')[0];
 
         const [year, month, day] = dateSeule.split('-');

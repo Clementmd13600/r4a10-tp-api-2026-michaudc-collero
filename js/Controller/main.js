@@ -1,9 +1,9 @@
 import { Sumotori } from '../Model/Sumotori.js';
-import { Storage } from '../Model/Storage.js';
+import { Favoris } from '../Model/Favoris.js';
 import { SumoView } from '../View/SumoView.js';
 
 // Initialisation des composants
-const storage = new Storage();
+const favoris = new Favoris();
 const view = new SumoView();
 
 // Récupération des éléments interactifs
@@ -46,7 +46,7 @@ searchBtn.addEventListener('click', async () => {
         view.afficherSumo(currentSumo);
         
         // On vérifie si ce sumo est déjà dans nos favoris pour colorer l'étoile
-        const estDejaFavori = storage.estFavori(currentSumo.name);
+        const estDejaFavori = favoris.estFavori(currentSumo.name);
         view.changementetoile(estDejaFavori);
         
     } catch (e) {
@@ -66,16 +66,16 @@ favBtn.addEventListener('click', () => {
     const name = currentSumo.name;
     
     // Si il est dans les favoris 
-    if (storage.estFavori(name)) {
-        storage.supprimerFavori(name);
+    if (favoris.estFavori(name)) {
+        favoris.supprimerFavori(name);
         view.changementetoile(false); // On repasse l'étoile en blanc
     } else {
-        storage.ajouterFavori(name);
+        favoris.ajouterFavori(name);
         view.changementetoile(true); // On passe l'étoile en jaune
     }
     
     // On rafraîchit la liste des favoris
-    view.afficherFavoris(storage.getFavoris());
+    view.afficherFavoris(favoris.getFavoris());
 });
 
 /**
@@ -88,8 +88,8 @@ favList.addEventListener('click', (e) => {
 
     // Cas 1 : Clic sur la croix 
     if (e.target.classList.contains('delete-fav')) {
-        storage.supprimerFavori(name);
-        view.afficherFavoris(storage.getFavoris());
+        favoris.supprimerFavori(name);
+        view.afficherFavoris(favoris.getFavoris());
         
         if (currentSumo && currentSumo.name === name) {
             view.changementetoile(false);
@@ -110,5 +110,5 @@ favList.addEventListener('click', (e) => {
  */
 window.addEventListener('DOMContentLoaded', () => {
     // Au chargement de la page, on affiche les favoris déjà sauvegardés
-    view.afficherFavoris(storage.getFavoris());
+    view.afficherFavoris(favoris.getFavoris());
 });
