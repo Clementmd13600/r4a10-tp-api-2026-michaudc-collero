@@ -3,22 +3,27 @@ export class Sumotori {
         this.name = data.shikonaEn || "Inconnu";
         this.weight = data.weight || "N/A";
         this.height = data.height || "N/A";
-        this.rank = data.currentRank || "Non classé"; 
+        this.rank = data.currentRank || "Non classé";
         this.origin = data.shusshin || "Origine inconnue";
-        
-        // On traite la date de naissance ici
         this.birthDate = this.formatDate(data.birthDate);
         this.age = this.calculateAge(data.birthDate);
     }
 
-    // Formatage : YYYY-MM-DD -> DD/MM/YYYY
+    /**
+     * Nettoie et formate la date : YYYY-MM-DDT00:00:00Z -> DD/MM/YYYY
+     */
     formatDate(dateStr) {
         if (!dateStr) return "Inconnue";
-        const [year, month, day] = dateStr.split('-');
+
+        // On enlève tout ce qui se trouve après le 'T' (l'heure et le fuseau horaire) sinon tres moche comme retour
+        const dateSeule = dateStr.split('T')[0];
+
+        const [year, month, day] = dateSeule.split('-');
+        
         return `${day}/${month}/${year}`;
     }
 
-    // Calcul de l'âge exact
+    // donne l'age actuel
     calculateAge(dateStr) {
         if (!dateStr) return "N/A";
         const birthDate = new Date(dateStr);
