@@ -23,12 +23,12 @@ export class SumoView {
             <div class="sumo-display-card">
                 <h2>${sumo.name}</h2>
                 <div class="stats-box">
-                    <p><strong>🏆 Rang :</strong> ${sumo.rank}</p>
                     <p><strong>🎂 Âge :</strong> ${sumo.age} ans</p>
                     <p><strong>📅 Naissance :</strong> ${sumo.birthDate}</p>
-                    <p><strong>📍 Origine :</strong> ${sumo.origin}</p>
-                    <p><strong>⚖️ Poids :</strong> ${sumo.weight} kg</p>
                     <p><strong>📏 Taille :</strong> ${sumo.height} cm</p>
+                    <p><strong>⚖️ Poids :</strong> ${sumo.weight} kg</p>
+                    <p><strong>📍 Origine :</strong> ${sumo.origin}</p>
+                    <p><strong>🏆 Rang :</strong> ${sumo.rank}</p>
                 </div>
             </div>
         `;
