@@ -32,6 +32,12 @@ header h1 {
     margin: 0;
 }
 
+.instruction {
+    color: var(--paper-white); 
+    margin-bottom: 20px;       
+    font-size: 1.1rem;
+}
+
 /* Barre de recherche */
 .search-bar {
     display: flex;

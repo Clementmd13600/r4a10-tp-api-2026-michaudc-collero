@@ -8,21 +8,24 @@
 <body>
     <header>
         <h1>SUMO EXPLORER</h1>
-        <p>Recherchez un lutteur (Rikishi) par son nom.</p>
+        <p class="instruction">
+            Bienvenue sur SUMO EXPLORER, ici tu as accès à une fiche d'informations sur ton sumo favori.
+            Si tu ne t'y connais pas trop je te mets quelques exemples de sumo que tu peux rechercher : 
+            Hakunofuji,Terunosato,Kaizen,Takerufuji,Kazenoumi et pleins d'autres encore
+        </p>
     </header>
 
     <main class="container">
         <div class="search-bar">
-            <input type="text" id="sumoInput" placeholder="Ex: Hakuho, Terunofuji...">
-            <button id="searchBtn" disabled>🔎</button>
-            <button id="favBtn" disabled>☆</button>
+            <input type="text" id="sumoInput" placeholder="Ex: Hakunofuji, Terunosato...">
+            <button id="searchBtn">🔎</button>
+            <button id="favBtn">☆</button>
         </div>
 
         <div class="content">
             <section id="result-section">
                 <div id="loader" class="hidden">Chargement du lutteur...</div>
-                <div id="sumoCard">
-                    </div>
+                <div id="sumoCard"></div>
             </section>
 
             <aside id="favorites-section">
@@ -33,6 +36,6 @@
         </div>
     </main>
 
-    <script type="module" src="js/Controleur/main.js"></script>
+    <script type="module" src="js/Controller/main.js"></script>
 </body>
 </html>
