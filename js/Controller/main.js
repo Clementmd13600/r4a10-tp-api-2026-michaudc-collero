@@ -23,44 +23,27 @@ let currentSumo = null;
  */
 let recherche;
 searchBtn.addEventListener('click', recherche = async () => {
-    let nameInput = input.value.trim().toLowerCase();
+    let nameInput = input.value.trim();
+    if (!nameInput) return;
 
-    // On lance l'état de chargement
     view.chargement(true);
     
     try {
-        // Appel asynchrone à l'API Sumo
-        const response = await fetch(`https://www.sumo-api.com/api/rikishis`);
-        const data = await response.json();
-    
-        // On cherche dans les résultats celui qui correspond au nom tapé
-        const foundData = data.records.find(r => 
-            // .includes permet que quand tu mets le bout du nom du sumo ca te trouve les infos du nom complet
-            r.shikonaEn.toLowerCase().includes(nameInput)
-        );
 
-        if (!foundData) {
+        currentSumo = await Sumotori.rechercher(nameInput);
+
+        if (!currentSumo) {
             throw new Error("Lutteur introuvable");
         }
-
-        // On instancie le modèle avec les données reçues
-        currentSumo = new Sumotori(foundData);
-        
-        // On met à jour la vue
         view.afficherSumo(currentSumo);
-        
-        // On vérifie si ce sumo est déjà dans nos favoris pour colorer l'étoile
-        const estDejaFavori = favoris.estFavori(currentSumo.name);
-        view.changementetoile(estDejaFavori);
-        
+        view.changementetoile(favoris.estFavori(currentSumo.name));
         
     } catch (e) {
-        alert("Lutteur non trouvé. Essayez 'Asanoyama' ou 'Hakuho'.");
+        alert("Le sumo " + nameInput + " n'existe pas");
     } finally {
-        // On arrête le loader
         view.chargement(false);
     }
-    return 'ok';
+    return "ok";
 });
 
 /**
@@ -72,16 +55,15 @@ favBtn.addEventListener('click', () => {
     const name = currentSumo.name;
     
     // Si il est dans les favoris 
-    if (favoris.estFavori(name)) {
-        favoris.supprimerFavori(name);
-        view.changementetoile(false); // On repasse l'étoile en blanc
+    if (favoris.estFavori(currentSumo.name)) { 
+        favoris.supprimerFavori(currentSumo.name);
+        view.changementetoile(false);
     } else {
-        favoris.ajouterFavori(name);
-        view.changementetoile(true); // On passe l'étoile en jaune
+        favoris.ajouterFavori(currentSumo); // Ici on envoie l'objet complet pour le rang
+        view.changementetoile(true);
     }
-    
     // On rafraîchit la liste des favoris
-    view.afficherFavoris(favoris.getFavoris());
+    view.afficherFavoris(favoris.Obtenir());
 });
 
 /**
@@ -95,7 +77,7 @@ favList.addEventListener('click', (e) => {
     // Cas 1 : Clic sur la croix 
     if (e.target.classList.contains('delete-fav')) {
         favoris.supprimerFavori(name);
-        view.afficherFavoris(favoris.getFavoris());
+        view.afficherFavoris(favoris.Obtenir());
         
         if (currentSumo && currentSumo.name === name) {
             view.changementetoile(false);
@@ -116,7 +98,18 @@ favList.addEventListener('click', (e) => {
  */
 window.addEventListener('DOMContentLoaded', () => {
     // Au chargement de la page, on affiche les favoris déjà sauvegardés
-    view.afficherFavoris(favoris.getFavoris());
+    view.afficherFavoris(favoris.Obtenir());
+});
+
+
+sortBtn.addEventListener('click', () => {
+    // 1. On demande au modèle de trier son tableau interne
+    favoris.trierParRang();
+    
+    // 2. On demande à la vue de ré-afficher la liste maintenant triée
+    view.afficherFavoris(favoris.Obtenir());
+    
+    console.log("Liste triée par rang !");
 });
 
 //à l'utilisation d'un espace

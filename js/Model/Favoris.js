@@ -9,7 +9,7 @@ export class Favoris {
      * Récupère et désérialise les favoris depuis le stockage local
      * @returns {string[]} Tableau des noms 
      */
-    getFavoris() {
+    Obtenir() {
         // On récupère la chaîne de caractères brute du localStorage
         const data = localStorage.getItem(this.key);
 
@@ -24,18 +24,24 @@ export class Favoris {
     }
 
     /**
-     * Ajoute un nouveau lutteur aux favoris s'il n'y figure pas déjà
-     * @param {string} name - Le nom du sumo à enregistrer
+     * Ajoute un objet sumo aux favoris s'il n'y figure pas déjà
+     * @param {Object} sumo - L'objet complet du lutteur (contient .name et .rank)
      */
-    ajouterFavori(name) {
-        // On récupère l'état actuel des favoris
-        const favs = this.getFavoris();
+    ajouterFavori(sumo) {
+        const favs = this.Obtenir();
 
-        // Si le nom n'y est pas déjà
-        if (!favs.includes(name)) {
+        // On vérifie si le nom du sumo n'est pas déjà dans la liste d'objets
+        // .some() renvoie vrai si au moins un élément correspond à la condition
+        const existeDeja = favs.some(f => f.name === sumo.name);
+
+        if (!existeDeja) {
+            // On crée un petit objet propre avec juste ce dont on a besoin
+            const nouveauFav = {
+                name: sumo.name,
+                rank: sumo.rank
+            };
             
-            // On l'ajoute
-            favs.push(name);
+            favs.push(nouveauFav);
 
             // On met à jour le localStorage
             localStorage.setItem(this.key, JSON.stringify(favs));
@@ -46,16 +52,18 @@ export class Favoris {
      * Supprime un sumo des favoris et met à jour le stockage local
      * @param {string} name - Le nom unique du sumo à retirer
      */
-    supprimerFavori(name) {
-        // On récupère la liste actuelle
-        const listeActuelle = this.getFavoris();
+    supprimerFavori(nameASupprimer) {
+        // On récupère la liste actuelle (qui contient des objets {name, rank})
+        const favs = this.Obtenir();
 
-        // On créer un nouveau tableau grâce à filter mais sans le sumo qu'on veut supprimer
-        const listeMiseAJour = listeActuelle.filter(s => s !== name);
+        // On ne garde que les sumos dont le NOM est différent de celui qu'on veut supprimer
+        const nouvelleListe = favs.filter(f => f.name !== nameASupprimer);
 
-        // On transforme le nouveau tableau en texte (JSON) et on l'écrase dans le storage
-        const donneesJSON = JSON.stringify(listeMiseAJour);
-        localStorage.setItem(this.key, donneesJSON);
+        // On enregistre la nouvelle liste filtrée
+        localStorage.setItem(this.key, JSON.stringify(nouvelleListe));
+        
+        // On met à jour la liste interne de l'instance si tu en as une
+        this.liste = nouvelleListe; 
     }
 
     /**
@@ -63,11 +71,37 @@ export class Favoris {
      * @param {string} name - Le nom du sumo à tester
      * @returns {boolean} True si le nom est présent, false sinon
      */
-    estFavori(name) {
-        // On récupère le tableau actuel
-        const listeDesFavoris = this.getFavoris();
+    estFavori(nomCherche) {
+        const favs = this.Obtenir(); // Récupère la liste [{name:...}, {name:...}]
+        
+        // .some renvoie true si au moins un objet a le bon nom
+        return favs.some(f => f.name === nomCherche);
+    }
 
-        // On parcours le tableau avec .includes et on renvoie true s'il est dedans, false sinon
-        return listeDesFavoris.includes(name);
+    // À ajouter dans ta classe Favoris
+    sauvegarder() {
+        localStorage.setItem(this.key, JSON.stringify(this.liste));
+    }
+
+    trierParRang() {
+        this.liste = this.Obtenir();
+        // Ordre officiel du plus haut au plus bas
+        const hierarchie = ["Yokozuna", "Ozeki", "Sekiwake", "Komusubi", "Maegashira", "Juryo", "Makushita", "Sandanme", "Jonidan", "Jonokuchi"];
+
+
+        
+        this.liste.sort((a, b) => {
+            // On compare l'index du rang de A avec celui de B
+            const indexA = hierarchie.findIndex(r => a.rank.includes(r));
+            const indexB = hierarchie.findIndex(r => b.rank.includes(r));
+
+            // Si un rang n'est pas trouvé (index -1), on le met à la fin (99)
+            const scoreA = indexA === -1 ? 99 : indexA;
+            const scoreB = indexB === -1 ? 99 : indexB;
+
+            return scoreA - scoreB;
+        });
+
+        this.sauvegarder(); // On enregistre l'ordre trié
     }
 }

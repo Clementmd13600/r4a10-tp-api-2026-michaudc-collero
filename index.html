@@ -9,22 +9,19 @@
     <header>
         <h1>SUMO EXPLORER</h1>
         <p class="instruction">
-            Bienvenue sur SUMO EXPLORER, ici tu as accès à une fiche d'informations sur ton sumo favori.
-            Si tu ne t'y connais pas trop je te mets quelques exemples de sumo que tu peux rechercher : 
-            Hakunofuji,Terunosato,Kaizen,Takerufuji,Kazenoumi et pleins d'autres encore
-        </p>
+            Bienvenue sur SUMO EXPLORER, ici tu as accès à une fiche d'informations sur ton sumo favori basé sur l'API SUMOAPI.
+        <p class ="instruction">Si tu ne t'y connais pas trop je te mets quelques exemples de sumo que tu peux rechercher : Hakunofuji,Terunosato,Kaizen,Takerufuji,Kazenoumi et pleins d'autres encore</p>
+        <p class="instruction">Voici le classement du plus haut au plus petit des sumos avec un exemple de sumo pour que vous vérifier que le trie fonctionne bien : 
+            "Yokozuna" , "Ozeki", "Sekiwake", "Komusubi", "Maegashira", "Juryo", "Makushita", "Sandanme", "Jonidan", "Jonokuchi"</p>
+        <p class="instruction">Vous pouvez essayez en mettant en premier Kaizen qui est Jonokuchi et Hakunofuji qui est Maegashira</p>
     </header>
 
     <main class="container">
         <div class="search-bar">
             <input type="text" id="sumoInput" placeholder="Ex: Hakunofuji, Terunosato...">
-
             <button id="searchBtn">🔎</button>
             <button id="favBtn">☆</button>
         </div>
-        <div id="suggestionBox" class="suggestions-container"></div>
-
-
 
         <div class="content">
             <section id="result-section">
@@ -34,6 +31,7 @@
 
             <aside id="favorites-section">
                 <h3>Rikishi Favoris</h3>
+                <button id="sortBtn" class="btn-secondary"> Trier par Rang</button>
                 <ul id="favList"></ul>
                 <p id="noFav"> (Ø Aucun favori) </p>
             </aside>

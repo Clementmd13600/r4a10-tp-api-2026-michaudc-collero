@@ -118,6 +118,22 @@ header h1 {
 
 .hidden { display: none; }
 
+#sortBtn {
+    width: 100%;
+    background-color: var(--dark-wood);
+    color: var(--paper-white);
+    border: 1px solid var(--sumo-red);
+    padding: 8px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    font-family: 'Shippori Mincho', serif;
+    transition: all 0.3s;
+}
+
+#sortBtn:hover {
+    background-color: var(--sumo-red);
+}
+
 .dropdown-content {
         position: absolute;
         width: 100%;
