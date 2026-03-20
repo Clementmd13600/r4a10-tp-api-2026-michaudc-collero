@@ -1,4 +1,3 @@
-
 export class SumoView {
     constructor() {
         this.cardContainer = document.getElementById('sumoCard');
@@ -8,16 +7,24 @@ export class SumoView {
         this.noFavMsg = document.getElementById('noFav');
     }
 
+    /**
+     * Gère l'état visuel de l'application pendant les appels API 
+     * @param {boolean} show - Définit si on affiche le spinner de chargement
+     */
     chargement(show) {
         if (show) {
             this.loader.classList.remove('hidden');
+            // On vide le container pour éviter l'affichage de données obsolètes pendant l'attente
             this.cardContainer.innerHTML = "";
         } else {
             this.loader.classList.add('hidden');
         }
     }
 
-    // La méthode mise à jour avec l'âge et la naissance
+    /**
+     * Injection dynamique du contenu HTML pour la fiche d'un sumo
+     * @param {Object} sumo - L'objet de données formaté par le modèle.
+     */
     afficherSumo(sumo) {
         this.cardContainer.innerHTML = `
             <div class="sumo-display-card">
@@ -34,6 +41,9 @@ export class SumoView {
         `;
     }
 
+    /**
+     * Met à jour l'état "Favori".
+     */
     changementetoile(isFav) {
         if (isFav) {
             this.favBtn.textContent = "★";    
@@ -44,7 +54,13 @@ export class SumoView {
         }
     }
 
+    /**
+     * Rendu de la liste des favoris.
+     * @param {Array} favorites - Tableau d'objets [{name, rank}, ...]
+     */
     afficherFavoris(favorites) {
+        // Utilisation de .map() pour transformer le tableau d'objets en tableau de chaînes HTML
+        // .join('') permet de supprimer les virgules par défaut lors de l'insertion dans le DOM
         this.favList.innerHTML = favorites.map(sumo => `
             <li class="fav-item">
                 <button class="btn-select-sumo" data-name="${sumo.name}">
