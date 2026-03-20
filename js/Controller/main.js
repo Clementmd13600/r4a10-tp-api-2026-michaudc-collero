@@ -21,7 +21,8 @@ let currentSumo = null;
 /**
  * GESTION DE LA RECHERCHE 
  */
-searchBtn.addEventListener('click', async () => {
+let recherche;
+searchBtn.addEventListener('click', recherche = async () => {
     let nameInput = input.value.trim().toLowerCase();
 
     // On lance l'état de chargement
@@ -52,12 +53,14 @@ searchBtn.addEventListener('click', async () => {
         const estDejaFavori = favoris.estFavori(currentSumo.name);
         view.changementetoile(estDejaFavori);
         
+        
     } catch (e) {
         alert("Lutteur non trouvé. Essayez 'Asanoyama' ou 'Hakuho'.");
     } finally {
         // On arrête le loader
         view.chargement(false);
     }
+    return 'ok';
 });
 
 /**
@@ -116,12 +119,14 @@ window.addEventListener('DOMContentLoaded', () => {
     view.afficherFavoris(favoris.getFavoris());
 });
 
-
 //à l'utilisation d'un espace
-window.addEventListener("keypress", function(event) {
+window.addEventListener("keypress",async function(event) {
         // On simule le clic de recherche
   if (event.key === "Enter") {
-        searchBtn.click();
+
+        await recherche();
+        let sumo_nom = this.document.querySelector('#sumoInput');
+        sumo_nom.value  = document.querySelector('.sumo-display-card h2').textContent;
   } 
 })
 
