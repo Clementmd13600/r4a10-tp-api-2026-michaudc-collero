@@ -30,7 +30,7 @@ searchBtn.addEventListener('click', recherche = async () => {
     
     try {
 
-        currentSumo = await Sumotori.rechercher(nameInput);
+        currentSumo = await Sumotori.rechercherSumo(nameInput);
 
         if (!currentSumo) {
             throw new Error("Lutteur introuvable");
@@ -175,7 +175,7 @@ function afficherSuggestions(list) {
         div.addEventListener('click', () => {
             input.value = sumo.shikonaEn; // On remplit l'input
             suggestionBox.innerHTML = ''; // On vide les suggestions
-            searchBtn.click();            // On lance la recherche automatiquement
+            recherche();            // On lance la recherche automatiquement
         });
 
         suggestionBox.appendChild(div);

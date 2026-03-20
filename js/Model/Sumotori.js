@@ -41,7 +41,7 @@ export class Sumotori {
      * @param {string} nameInput - Le nom tapé par l'utilisateur
      * @returns {Promise<Sumotori|null>} Une instance de Sumotori ou null
      */
-    static async rechercher(nameInput) {
+    static async rechercherSumo(nameInput) {
         try {
             const response = await fetch(`https://www.sumo-api.com/api/rikishis`);
             const data = await response.json();

@@ -45,11 +45,12 @@ export class SumoView {
     }
 
     afficherFavoris(favorites) {
-        this.noFavMsg.classList.toggle('hidden', favorites.length > 0);
-        this.favList.innerHTML = favorites.map(name => `
+        this.favList.innerHTML = favorites.map(sumo => `
             <li class="fav-item">
-                <button class="btn-select-sumo" data-name="${name}">${name}</button>
-                <span class="delete-fav" data-name="${name}">⨷</span>
+                <button class="btn-select-sumo" data-name="${sumo.name}">
+                    ${sumo.name} <small>(${sumo.rank})</small> 
+                </button>
+                <span class="delete-fav" data-name="${sumo.name}">⨷</span>
             </li>
         `).join('');
     }
